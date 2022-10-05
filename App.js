@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import CameraScreen from "./screens/CameraScreen";
 import ImagesScreen from "./screens/ImagesScreen";
 import FeedScreen from "./screens/FeedScreen";
@@ -10,11 +11,30 @@ const Tab = createBottomTabNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Tab.Navigator>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+
+            if (route.name === "Camera") {
+              iconName = focused ? "camera" : "camera-outline";
+            } else if (route.name === "Images") {
+              iconName = focused ? "image" : "image-outline";
+            } else if (route.name === "Feed") {
+              iconName = focused ? "share-social" : "share-social-outline";
+            }
+
+            // You can return any component that you like here!
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+          tabBarActiveTintColor: "blue",
+          tabBarInactiveTintColor: "gray",
+        })}
+      >
         <Tab.Screen
           name="Camera"
           component={CameraScreen}
-          options={{ unmountOnBlur: true }}
+          options={{ unmountOnBlur: true }} // Pour que les composants se démontent lorsqu'on change de tab on utilise unmountOnBlur: true
         />
         <Tab.Screen
           name="Images"
