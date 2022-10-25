@@ -29,19 +29,25 @@ const CameraScreen = () => {
     );
   }
 
+  async function takePicture() {
+    const pictureMetadata = await cameraRef.current.takePictureAsync();
+    console.log("pictureMetadata", pictureMetadata);
+  }
+
   return (
     <Camera style={styles.camera} type={cameraType} ref={cameraRef}>
       <View style={styles.cameracontainer}>
         <TouchableOpacity
           style={styles.reverseCamerabutton}
           onPress={toggleCameraType}
-          activeOpacity={0.4}
+          activeOpacity={0.5}
         >
           <Ionicons name="camera-reverse-sharp" size={50} color="white" />
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.1}
           style={styles.takePicturesButtons}
+          onPress={takePicture}
         >
           <Ionicons name="radio-button-off-outline" size={100} color="white" />
         </TouchableOpacity>
