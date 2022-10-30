@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Camera, CameraType } from "expo-camera";
+import * as ImageManipulator from "expo-image-manipulator";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 const CameraScreen = () => {
@@ -8,6 +9,7 @@ const CameraScreen = () => {
   const [hasPermission, setHasPermission] = useState(null);
   const cameraRef = useRef(null);
 
+  // useEffect qui, lors de la montée du component sur le dom (render), va checker la permission d'accès à l'appareil photo
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
@@ -23,6 +25,7 @@ const CameraScreen = () => {
     );
   }
 
+  // Fonction qui va switch entre la prise de photo par l'optique avant et arrière
   function toggleCameraType() {
     setCameraType(
       cameraType === CameraType.back ? CameraType.front : CameraType.back
@@ -30,8 +33,11 @@ const CameraScreen = () => {
   }
 
   async function takePicture() {
-    const pictureMetadata = await cameraRef.current.takePictureAsync();
-    console.log("pictureMetadata", pictureMetadata);
+    const pictureMetadata = await cameraRef.current.takePictureAsync(); // Acceder à la reference de la caméra pour prendre une photo
+    const imageManipulator = await ImageManipulator.manipulateAsync(
+      pictureMetadata.uri, // le chemin de l'image à redimensionner
+      [{ resize: { width: 800 } }] // tableau d'objets représentant les options de manipulation : plusieurs actions
+    );
   }
 
   return (
