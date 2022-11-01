@@ -40,11 +40,6 @@ const App = () => {
           component={ImagesScreen}
           options={{ unmountOnBlur: true }}
         />
-        <Tab.Screen
-          name="Feed"
-          component={FeedScreen}
-          options={{ unmountOnBlur: true }}
-        />
       </Tab.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>
